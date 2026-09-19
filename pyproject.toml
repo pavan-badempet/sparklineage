@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sparklineage"
+version = "0.2.0"
+description = "Lightweight PySpark execution plan analysis, field-to-field column lineage, pre-flight compiler lints, and zero-dependency interactive DAGs."
+readme = "README.md"
+authors = [
+    { name = "Pavan Badempet", email = "pavan9b@gmail.com" }
+]
+license = "MIT"
+requires-python = ">=3.8"
+keywords = ["pyspark", "spark", "lineage", "catalyst", "data-engineering", "linter", "sql"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Database",
+]
+dependencies = []
+
+[project.optional-dependencies]
+spark = ["pyspark>=3.2.0"]
+dev = [
+    "pytest>=7.0",
+    "pyspark>=3.2.0"
+]
+
+[project.urls]
+Homepage = "https://pavanbadempet.github.io"
+Documentation = "https://pavanbadempet.github.io/optimizing-spark-pipelines.html"
+Repository = "https://github.com/pavanbadempet/sparklineage"
+Issues = "https://github.com/pavanbadempet/sparklineage/issues"
+Author = "https://www.linkedin.com/in/pavanbadempet/"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sparklineage*"]
