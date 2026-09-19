@@ -1,6 +1,6 @@
 # ⚡ sparklineage
 
-[![PyPI version](https://img.shields.io/badge/pypi-v0.2.2-blue.svg)](https://pypi.org/project/sparklineage/)
+[![PyPI version](https://img.shields.io/badge/pypi-v0.2.3-blue.svg)](https://pypi.org/project/sparklineage/)
 [![Author](https://img.shields.io/badge/author-Pavan%20Badempet-indigo.svg)](https://pavanbadempet.gitlab.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
@@ -74,11 +74,28 @@ Benchmarked across 1,000–10,000 runs on production Catalyst plans:
 
 ## 📦 Installation
 
+With **uv** (Recommended — installs in ~100ms):
+```bash
+# Add to current project
+uv add sparklineage
+
+# Or install into active virtual environment
+uv pip install sparklineage
+```
+
+Run instantly with **uvx** (Zero installation required!):
+```bash
+# Lint any directory or pipeline script in <120ms without installing anything:
+uvx sparklineage lint ./pipelines
+```
+
+With standard **pip**:
 ```bash
 pip install sparklineage
 ```
 
-Zero dependencies. Compatible with Python 3.8 through 3.14+ and Apache Spark / PySpark 3.2+.
+**Zero dependencies.** Compatible with Python 3.8 through 3.14+ and Apache Spark / PySpark 3.2+.
+
 
 ---
 
