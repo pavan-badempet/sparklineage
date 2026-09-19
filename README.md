@@ -1,12 +1,12 @@
 # ⚡ sparklineage
 
-[![PyPI version](https://img.shields.io/badge/pypi-v0.2.3-blue.svg)](https://pypi.org/project/sparklineage/)
+[![PyPI version](https://img.shields.io/badge/pypi-v0.2.4-blue.svg)](https://pypi.org/project/sparklineage/)
 [![Author](https://img.shields.io/badge/author-Pavan%20Badempet-indigo.svg)](https://pavanbadempet.gitlab.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-zero-green.svg)](https://pypi.org/project/sparklineage/)
 [![Rust Core](https://img.shields.io/badge/powered%20by-Rust-orange.svg)](https://www.rust-lang.org/)
-[![Tests](https://img.shields.io/badge/tests-12%2F12%20passing-brightgreen.svg)](https://pypi.org/project/sparklineage/)
+[![Tests](https://img.shields.io/badge/tests-14%2F14%20passing-brightgreen.svg)](https://pypi.org/project/sparklineage/)
 
 A lightweight, zero-dependency, developer-first engine for **field-to-field column lineage**, **Catalyst pre-flight compiler lints**, **multi-cloud security redaction**, and **interactive DAG visualization** in Apache Spark and PySpark.
 
@@ -101,9 +101,9 @@ pip install sparklineage
 
 ## 🚀 Copy-Pasteable Quickstart Examples
 
-### 1. Interactive Visual DAG in Notebooks (Databricks / Jupyter)
+### 1. Next-Gen Interactive Visual DAG in Notebooks (Databricks / Jupyter)
 
-Render a dark-mode, zoomable SVG DAG directly in a notebook cell with zero external CDN scripts:
+Render a dark-mode, zoomable SVG DAG directly in a notebook cell with **zero external CDN scripts or server requirements**:
 
 ```python
 import sparklineage as sl
@@ -111,12 +111,23 @@ import sparklineage as sl
 # Inspect any PySpark DataFrame
 inspector = sl.inspect(my_df)
 
-# Render interactive SVG directly in Databricks or Jupyter
+# Render interactive SVG directly in Databricks or Jupyter notebook
 inspector.display()
 
-# Or export standalone HTML to share with team
+# Or export standalone HTML to share with your team
 inspector.save_html("pipeline_dag.html")
+
+# Or copy Mermaid diagram markdown directly for GitHub/GitLab PRs or Notion:
+print(inspector.to_mermaid())
 ```
+
+#### 🌟 UI Capabilities Outperforming OpenLineage / Spline:
+- **Neon Column Path Tracing**: Clicking any column pill (e.g. `final_revenue`) dims unrelated nodes and animates the exact upstream path back to leaf scans with moving flow particles.
+- **Inline Compiler Hazard Badges**: Nodes with execution bottlenecks (e.g. Cartesian joins, un-broadcasted dimension tables) pulse with warning/critical badges on the canvas. Clicking the badge opens the root-cause diagnosis and copy-pasteable fix code.
+- **Live Search & Auto-Focus**: Type column or table names into the top search bar to instantly highlight and pan/center to matching operations.
+- **Multi-Layout Switching**: Toggle between **↔ Horizontal (Pipeline Flow)** and **↕ Vertical (Catalyst Tree)** in one click.
+- **🔥 Risk Heatmap Mode**: Switch between operation type colors and risk severity heatmap (Red = Critical Hazard, Amber = Shuffle Exchange, Green = Safe).
+- **One-Click Vector SVG & Mermaid Export**: Download raw vector SVG or copy Mermaid code directly from the canvas toolbar.
 
 ---
 

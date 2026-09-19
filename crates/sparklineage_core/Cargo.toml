@@ -1,6 +1,6 @@
 [package]
 name = "sparklineage_core"
-version = "0.2.3"
+version = "0.2.4"
 edition = "2021"
 authors = ["Pavan Badempet <pavan9b@gmail.com>"]
 description = "Ultra-fast Rust engine for sparklineage: Catalyst plan parsing, security sanitization, and offline code linting."

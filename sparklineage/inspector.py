@@ -113,11 +113,23 @@ class PlanInspector:
         """Returns standalone interactive HTML document with credentials safely redacted."""
         if sanitize:
             self.sanitize()
+        lint_report = self.lint()
         return Visualizer.generate_html(
             self.graph,
             self.get_column_lineage(),
+            lint_report=lint_report,
             title=title
         )
+
+    def to_mermaid(self) -> str:
+        """Returns Mermaid diagram markdown definition of the execution graph."""
+        lines = ["graph LR"]
+        for nid, node in self.graph.nodes.items():
+            clean_label = f"{node.node_type.value.upper()}: {node.name}".replace('"', "'")
+            lines.append(f'  {nid}["{clean_label}"]')
+            for cid in node.children_ids:
+                lines.append(f"  {cid} --> {nid}")
+        return "\n".join(lines)
 
     def save_html(self, filepath: str = "spark_lineage.html") -> str:
         """Saves interactive visual DAG to an HTML file."""

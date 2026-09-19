@@ -9,7 +9,7 @@ Authored and maintained by Pavan Badempet <pavan9b@gmail.com>
 https://pavanbadempet.gitlab.io
 """
 
-__version__ = "0.2.3"
+__version__ = "0.2.4"
 __author__ = "Pavan Badempet"
 
 from .inspector import PlanInspector, inspect, lint
