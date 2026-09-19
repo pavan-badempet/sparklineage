@@ -1,5 +1,5 @@
 """
-Tests for live PySpark DataFrame integration.
+Tests for live PySpark DataFrame integration and native df.lineage accessor.
 """
 
 import pytest
@@ -71,3 +71,31 @@ def test_live_pyspark_inspect_and_lint(spark, tmp_path):
         content = f.read()
     assert "sparklineage" in content
     assert "graph-canvas" in content
+
+
+def test_native_df_lineage_accessor(spark, tmp_path):
+    """Verifies that `df.lineage` is automatically registered and functions as a native accessor."""
+    import sparklineage as sl
+
+    df = spark.range(10).withColumn("doubled", F.col("id") * 2)
+
+    # Verify native df.lineage property
+    assert hasattr(df, "lineage")
+    assert df.lineage is not None
+
+    # Test df.lineage.lint()
+    report = df.lineage.lint()
+    assert report.plan_depth >= 1
+
+    # Test df.lineage.columns
+    cols = df.lineage.columns
+    assert "doubled" in cols
+
+    # Test df.lineage.to_mermaid()
+    mermaid = df.lineage.to_mermaid()
+    assert "graph LR" in mermaid
+
+    # Test df.lineage.save_html()
+    html_file = tmp_path / "accessor_lineage.html"
+    out = df.lineage.save_html(str(html_file))
+    assert os.path.exists(out)

@@ -1,6 +1,6 @@
 # ⚡ sparklineage
 
-[![PyPI version](https://img.shields.io/badge/pypi-v0.2.5-blue.svg)](https://pypi.org/project/sparklineage/)
+[![PyPI version](https://img.shields.io/badge/pypi-v0.2.6-blue.svg)](https://pypi.org/project/sparklineage/)
 [![Author](https://img.shields.io/badge/author-Pavan%20Badempet-indigo.svg)](https://pavanbadempet.gitlab.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
@@ -101,24 +101,23 @@ pip install sparklineage
 
 ## 🚀 Copy-Pasteable Quickstart Examples
 
-### 1. Interactive Execution DAG in Notebooks (Databricks / Jupyter)
+### 1. Native PySpark `df.lineage` Accessor & Interactive Execution DAG
 
-Render a clean, standalone SVG DAG directly inside a notebook cell or export it as HTML/Mermaid:
+Once `sparklineage` is imported, every PySpark DataFrame is automatically augmented with a native `.lineage` accessor:
 
 ```python
 import sparklineage as sl
 
-# Inspect any PySpark DataFrame
-inspector = sl.inspect(my_df)
+# 1. Native DataFrame accessor syntax:
+df.lineage.display()        # Renders interactive SVG directly in Databricks or Jupyter
+df.lineage.lint()           # Catches Cartesian joins & broadcast opportunities before action
+df.lineage.columns          # Returns field-level column lineage map
+df.lineage.to_mermaid()     # Generates Mermaid diagram markdown for PRs & documentation
+df.lineage.save_html("dag.html")
 
-# Render interactive SVG directly in Databricks or Jupyter notebook
+# 2. Or use standard functional syntax:
+inspector = sl.inspect(df)
 inspector.display()
-
-# Or save as standalone HTML
-inspector.save_html("pipeline_dag.html")
-
-# Or export Mermaid markdown for documentation and pull requests
-print(inspector.to_mermaid())
 ```
 
 #### Visualizer Features:

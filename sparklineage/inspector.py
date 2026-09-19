@@ -194,3 +194,70 @@ def inspect(df: Any) -> PlanInspector:
 def lint(df: Any) -> LintReport:
     """Runs pre-flight compiler linter on a DataFrame directly."""
     return PlanInspector(df).lint()
+
+
+class LineageAccessor:
+    """
+    Native PySpark DataFrame accessor for lineage, pre-flight linting, and interactive DAG visualization.
+    Enables `df.lineage.display()`, `df.lineage.lint()`, `df.lineage.columns`, etc.
+    """
+
+    def __init__(self, df: Any):
+        self._df = df
+        self._inspector: Optional[PlanInspector] = None
+
+    @property
+    def inspector(self) -> PlanInspector:
+        if self._inspector is None:
+            self._inspector = PlanInspector(self._df)
+        return self._inspector
+
+    def display(self) -> Any:
+        """Render interactive DAG directly in Databricks or Jupyter notebook."""
+        return self.inspector.display()
+
+    def lint(self) -> LintReport:
+        """Run pre-flight compiler checks before submitting action."""
+        return self.inspector.lint()
+
+    def show(self) -> None:
+        """Print ANSI-colorized diagnostic report to terminal."""
+        return self.inspector.show()
+
+    def to_html(self, title: str = "Spark Execution & Lineage DAG", sanitize: bool = True) -> str:
+        """Generate self-contained interactive HTML document."""
+        return self.inspector.to_html(title=title, sanitize=sanitize)
+
+    def to_mermaid(self) -> str:
+        """Export Mermaid diagram markdown."""
+        return self.inspector.to_mermaid()
+
+    def save_html(self, filepath: str = "spark_lineage.html") -> str:
+        """Save interactive visual DAG to HTML file."""
+        return self.inspector.save_html(filepath=filepath)
+
+    @property
+    def columns(self) -> Dict[str, ColumnLineage]:
+        """Field-to-field column lineage mapping."""
+        return self.inspector.get_column_lineage()
+
+    @property
+    def graph(self) -> PlanGraph:
+        """Parsed Catalyst execution plan graph."""
+        return self.inspector.graph
+
+
+def register_pyspark_accessor() -> bool:
+    """
+    Seamlessly registers `df.lineage` on `pyspark.sql.DataFrame` if PySpark is available.
+    Returns True if successfully registered, False otherwise.
+    """
+    try:
+        from pyspark.sql import DataFrame
+        if not hasattr(DataFrame, "lineage"):
+            DataFrame.lineage = property(lambda self: LineageAccessor(self))
+            return True
+    except (ImportError, Exception):
+        pass
+    return False
+
