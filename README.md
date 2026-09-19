@@ -1,6 +1,6 @@
 # ⚡ sparklineage
 
-[![PyPI version](https://img.shields.io/badge/pypi-v0.2.0-blue.svg)](https://pypi.org/project/sparklineage/)
+[![PyPI version](https://img.shields.io/badge/pypi-v0.2.1-blue.svg)](https://pypi.org/project/sparklineage/)
 [![Author](https://img.shields.io/badge/author-Pavan%20Badempet-indigo.svg)](https://pavanbadempet.github.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
@@ -154,13 +154,6 @@ inspector = PlanInspector(my_df)
 inspector.check_broadcast_opportunities(threshold_mb=100)
 summary = inspector.summarize()
 ```
-
----
-
-## 📚 Technical Deep Dive
-
-Read the full architectural breakdown:  
-👉 **[Why Spark Developers Waste Thousands on Compute (And Why We Built a Pre-Flight Catalyst Linter)](docs/technical_deep_dive_article.md)**
 
 ---
 
