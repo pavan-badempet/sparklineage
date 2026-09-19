@@ -36,6 +36,29 @@ def test_secret_redaction_in_plans():
     assert "REDACTED" in graph.nodes["n0"].details or "********" in graph.nodes["n0"].details
 
 
+def test_multicloud_security_leak_detection():
+    graph = PlanGraph()
+    cloud_node = PlanNode(
+        node_id="n1",
+        node_type=NodeType.SOURCE,
+        name="CloudScan",
+        details="FileScan s3a://AKIAIOSFODNN7EXAMPLE:wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY@my-lakehouse-bucket/data.parquet AccountKey=00000000000000000000000000000000000000000000000000000000000000000000000000000000000000==",
+        expressions=[]
+    )
+    graph.add_node(cloud_node)
+    graph.root_id = "n1"
+
+    rule = SecuritySanitizationRule()
+    issues = rule.check(graph)
+    assert len(issues) >= 1
+
+    inspector = sl.PlanInspector()
+    inspector._graph = graph
+    inspector.sanitize()
+    assert "AKIAIOSFODNN7EXAMPLE" not in graph.nodes["n1"].details
+    assert "wJalrXUtnFEMI" not in graph.nodes["n1"].details
+
+
 def test_offline_static_code_linter():
     bad_code = """
 import pyspark.sql.functions as F
@@ -54,3 +77,9 @@ df.toPandas()
     assert "CODE01_COLLECT_IN_LOOP" in rule_ids
     assert "CODE02_EXPLICIT_CROSS_JOIN" in rule_ids
     assert "CODE04_CAST_IN_FILTER" in rule_ids
+
+
+def test_parallel_directory_scanning():
+    results = sl.lint_directory(".")
+    assert isinstance(results, dict)
+    assert len(results) >= 1

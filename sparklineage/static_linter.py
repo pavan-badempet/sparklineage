@@ -93,11 +93,27 @@ def lint_file(filepath: str) -> List[Dict[str, Any]]:
 
 
 def lint_directory(dirpath: str) -> Dict[str, List[Dict[str, Any]]]:
-    """Recursively scans a directory for PySpark anti-patterns across all .py files."""
+    """Recursively scans a directory for PySpark anti-patterns in parallel across all CPU cores."""
+    if rust_core is not None and hasattr(rust_core, "scan_directory_parallel"):
+        raw_map = rust_core.scan_directory_parallel(dirpath)
+        formatted: Dict[str, List[Dict[str, Any]]] = {}
+        for rel_path, issue_tuples in raw_map.items():
+            formatted[rel_path] = [
+                {
+                    "rule_id": r_id,
+                    "severity": sev,
+                    "line": line_no,
+                    "message": msg,
+                }
+                for r_id, sev, line_no, msg in issue_tuples
+            ]
+        return formatted
+
+    # Pure Python fallback
     results = {}
     for root, _, files in os.walk(dirpath):
         for f in files:
-            if f.endswith(".py"):
+            if f.endswith(".py") or f.endswith(".ipynb"):
                 full_path = os.path.join(root, f)
                 issues = lint_file(full_path)
                 if issues:
