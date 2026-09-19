@@ -1,0 +1,1 @@
+C:\Users\pavan\OneDrive\Documents\GitHub\sparklineage\crates\sparklineage_core\target\release\sparklineage_core.dll: C:\Users\pavan\OneDrive\Documents\GitHub\sparklineage\crates\sparklineage_core\src\lib.rs

@@ -13,6 +13,7 @@ __version__ = "0.2.0"
 __author__ = "Pavan Badempet"
 
 from .inspector import PlanInspector, inspect, lint
+from .static_linter import lint_code, lint_file, lint_directory
 from .models import (
     PlanGraph,
     PlanNode,
@@ -27,6 +28,9 @@ __all__ = [
     "PlanInspector",
     "inspect",
     "lint",
+    "lint_code",
+    "lint_file",
+    "lint_directory",
     "PlanGraph",
     "PlanNode",
     "NodeType",

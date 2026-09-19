@@ -1,0 +1,16 @@
+[package]
+name = "sparklineage_core"
+version = "0.2.0"
+edition = "2021"
+authors = ["Pavan Badempet <pavan9b@gmail.com>"]
+description = "Ultra-fast Rust engine for sparklineage: Catalyst plan parsing, security sanitization, and offline code linting."
+
+[lib]
+name = "sparklineage_core"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+pyo3 = { version = "0.23", features = ["extension-module", "abi3-py38"] }
+regex = "1.11"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

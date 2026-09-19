@@ -149,6 +149,52 @@ class RedundantExchangeRule(BaseRule):
         return issues
 
 
+class SecuritySanitizationRule(BaseRule):
+    """Scans execution plans for leaked database credentials, cloud storage keys, or unmasked PII."""
+    rule_id = "RULE06_SECURITY_AND_PII_LEAK"
+    title = "Credential or PII Leak Detected in Execution Plan"
+
+    def check(self, graph: PlanGraph, df: Any = None) -> List[LintIssue]:
+        issues: List[LintIssue] = []
+        combined_text = " ".join(f"{n.name} {n.details}" for n in graph.nodes.values())
+
+        try:
+            from . import sparklineage_core as rust_core
+            raw_issues = rust_core.scan_security(combined_text)
+            for rule_id, sev_str, msg in raw_issues:
+                sev = Severity.CRITICAL if sev_str == "CRITICAL" else Severity.WARNING
+                issues.append(LintIssue(
+                    rule_id=rule_id,
+                    title="Plan Security Exposure",
+                    severity=sev,
+                    message=msg,
+                    recommendation="Remove hardcoded credentials from DataFrame options and mask PII literal values in filter clauses."
+                ))
+            return issues
+        except ImportError:
+            pass
+
+        # Pure Python fallback
+        import re
+        if re.search(r'(?i)jdbc:[a-z0-9_]+://[^:]+:[^@\s]+@', combined_text):
+            issues.append(LintIssue(
+                rule_id="SEC01_JDBC_CREDENTIAL_LEAK",
+                title="Plan Security Exposure",
+                severity=Severity.CRITICAL,
+                message="Hardcoded database credentials detected in connection URI inside Catalyst plan.",
+                recommendation="Use secret management (e.g. Databricks secrets or Doppler) instead of hardcoding database passwords."
+            ))
+        if re.search(r'(?i)\b(ssn|credit_card|password)\b[#0-9A-Z_]*\s*([=><!]+)\s*[\'"][^\'"]+[\'"]', combined_text):
+            issues.append(LintIssue(
+                rule_id="SEC04_PII_FILTER_EXPOSURE",
+                title="Plan Security Exposure",
+                severity=Severity.WARNING,
+                message="Sensitive PII literal unmasked in filter predicate.",
+                recommendation="Sanitize literals before printing or exporting plan diagrams."
+            ))
+        return issues
+
+
 class PlanLinter:
     """Pre-flight compiler engine executing lint rules against a Spark plan."""
 
@@ -158,6 +204,7 @@ class PlanLinter:
         LineageDepthRule(),
         NonPushdownFilterRule(),
         RedundantExchangeRule(),
+        SecuritySanitizationRule(),
     ]
 
     def __init__(self, rules: Optional[List[BaseRule]] = None):
