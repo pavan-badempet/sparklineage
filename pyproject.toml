@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sparklineage"
-version = "0.2.1"
+version = "0.2.2"
 description = "Lightweight PySpark execution plan analysis, field-to-field column lineage, pre-flight compiler lints, and zero-dependency interactive DAGs."
 readme = "README.md"
 authors = [
     { name = "Pavan Badempet", email = "pavan9b@gmail.com" }
 ]
-license = { text = "MIT" }
+license = "MIT"
 requires-python = ">=3.8"
 keywords = ["pyspark", "spark", "lineage", "catalyst", "data-engineering", "linter", "sql"]
 classifiers = [
@@ -27,6 +27,9 @@ classifiers = [
 ]
 dependencies = []
 
+[project.scripts]
+sparklineage = "sparklineage.__main__:main"
+
 [project.optional-dependencies]
 spark = ["pyspark>=3.2.0"]
 dev = [
@@ -35,10 +38,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://pavanbadempet.github.io"
-Documentation = "https://pavanbadempet.github.io/optimizing-spark-pipelines.html"
-Repository = "https://github.com/pavanbadempet/sparklineage"
-Issues = "https://github.com/pavanbadempet/sparklineage/issues"
+Homepage = "https://pavanbadempet.gitlab.io"
+Documentation = "https://pavanbadempet.gitlab.io"
+Repository = "https://gitlab.com/pavanbadempet/sparklineage"
+Issues = "https://gitlab.com/pavanbadempet/sparklineage/-/issues"
 Author = "https://www.linkedin.com/in/pavanbadempet/"
 
 [tool.setuptools.packages.find]
