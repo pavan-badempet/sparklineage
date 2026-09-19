@@ -1,9 +1,16 @@
-"""
-Pretty-printing and terminal reporting utilities for sparklineage.
-"""
-
+import sys
 from typing import Dict, Any
 from .models import LintReport, ColumnLineage, Severity, PlanGraph
+
+
+def _safe_print(text: str) -> None:
+    """Prints text safely without crashing on restricted console encodings like cp1252."""
+    try:
+        print(text)
+    except UnicodeEncodeError:
+        encoding = getattr(sys.stdout, "encoding", "ascii") or "ascii"
+        clean_text = text.encode(encoding, errors="replace").decode(encoding)
+        print(clean_text)
 
 
 class Reporter:
@@ -27,41 +34,41 @@ class Reporter:
         column_lineage: Dict[str, ColumnLineage] = None
     ) -> None:
         """Prints rich colorized terminal report."""
-        print(f"\n{cls.BOLD}{cls.CYAN}╭─────────────────────────────────────────────────────────────╮{cls.RESET}")
-        print(f"{cls.BOLD}{cls.CYAN}│ ⚡ sparklineage v0.2.0 • Plan Diagnostic & Lineage Summary   │{cls.RESET}")
-        print(f"{cls.BOLD}{cls.CYAN}╰─────────────────────────────────────────────────────────────╯{cls.RESET}\n")
+        _safe_print(f"\n{cls.BOLD}{cls.CYAN}╭─────────────────────────────────────────────────────────────╮{cls.RESET}")
+        _safe_print(f"{cls.BOLD}{cls.CYAN}│ ⚡ sparklineage v0.2.0 • Plan Diagnostic & Lineage Summary   │{cls.RESET}")
+        _safe_print(f"{cls.BOLD}{cls.CYAN}╰─────────────────────────────────────────────────────────────╯{cls.RESET}\n")
 
         # Plan Architecture Metrics
         stats = lint_report.summary_stats
-        print(f"{cls.BOLD}📊 Plan Metrics:{cls.RESET}")
-        print(f"  • Plan Depth:       {cls.BOLD}{stats['depth']}{cls.RESET} stages")
-        print(f"  • Shuffle Stages:   {cls.BOLD}{stats['shuffles']}{cls.RESET}")
-        print(f"  • Joins Analyzed:   {cls.BOLD}{lint_report.joins_analyzed}{cls.RESET}")
-        print(f"  • Issues Detected:  {cls.BOLD}{stats['total_issues']}{cls.RESET} ({stats['critical']} Critical, {stats['warnings']} Warnings)\n")
+        _safe_print(f"{cls.BOLD}📊 Plan Metrics:{cls.RESET}")
+        _safe_print(f"  • Plan Depth:       {cls.BOLD}{stats['depth']}{cls.RESET} stages")
+        _safe_print(f"  • Shuffle Stages:   {cls.BOLD}{stats['shuffles']}{cls.RESET}")
+        _safe_print(f"  • Joins Analyzed:   {cls.BOLD}{lint_report.joins_analyzed}{cls.RESET}")
+        _safe_print(f"  • Issues Detected:  {cls.BOLD}{stats['total_issues']}{cls.RESET} ({stats['critical']} Critical, {stats['warnings']} Warnings)\n")
 
         # Linter Findings
         if lint_report.issues:
-            print(f"{cls.BOLD}🚨 Pre-Flight Compiler Warnings:{cls.RESET}")
+            _safe_print(f"{cls.BOLD}🚨 Pre-Flight Compiler Warnings:{cls.RESET}")
             for issue in lint_report.issues:
                 color = cls.RED if issue.severity == Severity.CRITICAL else (cls.YELLOW if issue.severity == Severity.WARNING else cls.CYAN)
                 badge = f"[{issue.severity.value}]"
-                print(f"  {color}{cls.BOLD}{badge} {issue.title}{cls.RESET}")
-                print(f"    {cls.DIM}Problem:{cls.RESET} {issue.message}")
-                print(f"    {cls.GREEN}{cls.BOLD}Fix:{cls.RESET}     {issue.recommendation}\n")
+                _safe_print(f"  {color}{cls.BOLD}{badge} {issue.title}{cls.RESET}")
+                _safe_print(f"    {cls.DIM}Problem:{cls.RESET} {issue.message}")
+                _safe_print(f"    {cls.GREEN}{cls.BOLD}Fix:{cls.RESET}     {issue.recommendation}\n")
         else:
-            print(f"  {cls.GREEN}✔ No obvious Catalyst anti-patterns detected.{cls.RESET}\n")
+            _safe_print(f"  {cls.GREEN}✔ No obvious Catalyst anti-patterns detected.{cls.RESET}\n")
 
         # Column Lineage Highlights
         if column_lineage:
-            print(f"{cls.BOLD}🌱 Column-Level Lineage Mapping:{cls.RESET}")
+            _safe_print(f"{cls.BOLD}🌱 Column-Level Lineage Mapping:{cls.RESET}")
             for col_name, lineage in list(column_lineage.items())[:10]:
                 sources_str = ", ".join(lineage.sources) or "Direct Transformation"
-                print(f"  • {cls.BOLD}{col_name}{cls.RESET} ⟵ {cls.CYAN}{sources_str}{cls.RESET}")
+                _safe_print(f"  • {cls.BOLD}{col_name}{cls.RESET} ⟵ {cls.CYAN}{sources_str}{cls.RESET}")
                 if lineage.transformations:
-                    print(f"    {cls.DIM}Transforms: {', '.join(lineage.transformations[:2])}{cls.RESET}")
+                    _safe_print(f"    {cls.DIM}Transforms: {', '.join(lineage.transformations[:2])}{cls.RESET}")
             if len(column_lineage) > 10:
-                print(f"  {cls.DIM}... and {len(column_lineage) - 10} more columns.{cls.RESET}")
-            print()
+                _safe_print(f"  {cls.DIM}... and {len(column_lineage) - 10} more columns.{cls.RESET}")
+            _safe_print("")
 
     @classmethod
     def to_markdown(
