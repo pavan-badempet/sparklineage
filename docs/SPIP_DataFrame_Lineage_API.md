@@ -5,7 +5,7 @@
 **Target Version:** Apache Spark 4.1.0+ / PySpark  
 **Component:** PySpark / SQL / Catalyst  
 **Discussion Thread:** dev@spark.apache.org  
-**JIRA Ticket:** SPARK-XXXXX  
+**JIRA Ticket:** [SPARK-59660](https://issues.apache.org/jira/browse/SPARK-59660)  
 
 ---
 
