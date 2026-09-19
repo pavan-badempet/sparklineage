@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sparklineage"
-version = "0.2.4"
+version = "0.2.5"
 description = "Lightweight PySpark execution plan analysis, field-to-field column lineage, pre-flight compiler lints, and zero-dependency interactive DAGs."
 readme = "README.md"
 authors = [

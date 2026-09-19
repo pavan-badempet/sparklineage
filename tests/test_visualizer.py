@@ -37,7 +37,7 @@ def test_visualizer_with_hazard_plan():
     inspector = inspect(SAMPLE_HAZARD_PLAN)
     html = inspector.to_html()
 
-    assert "hazard-pulse" in html
+    assert "hazard-banner" in html
     assert "RULE01_CARTESIAN_HAZARD" in html
     assert "CRITICAL" in html
 

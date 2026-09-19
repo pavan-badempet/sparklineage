@@ -1,6 +1,6 @@
 # ⚡ sparklineage
 
-[![PyPI version](https://img.shields.io/badge/pypi-v0.2.4-blue.svg)](https://pypi.org/project/sparklineage/)
+[![PyPI version](https://img.shields.io/badge/pypi-v0.2.5-blue.svg)](https://pypi.org/project/sparklineage/)
 [![Author](https://img.shields.io/badge/author-Pavan%20Badempet-indigo.svg)](https://pavanbadempet.gitlab.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
@@ -101,9 +101,9 @@ pip install sparklineage
 
 ## 🚀 Copy-Pasteable Quickstart Examples
 
-### 1. Next-Gen Interactive Visual DAG in Notebooks (Databricks / Jupyter)
+### 1. Interactive Execution DAG in Notebooks (Databricks / Jupyter)
 
-Render a dark-mode, zoomable SVG DAG directly in a notebook cell with **zero external CDN scripts or server requirements**:
+Render a clean, standalone SVG DAG directly inside a notebook cell or export it as HTML/Mermaid:
 
 ```python
 import sparklineage as sl
@@ -114,20 +114,20 @@ inspector = sl.inspect(my_df)
 # Render interactive SVG directly in Databricks or Jupyter notebook
 inspector.display()
 
-# Or export standalone HTML to share with your team
+# Or save as standalone HTML
 inspector.save_html("pipeline_dag.html")
 
-# Or copy Mermaid diagram markdown directly for GitHub/GitLab PRs or Notion:
+# Or export Mermaid markdown for documentation and pull requests
 print(inspector.to_mermaid())
 ```
 
-#### 🌟 UI Capabilities Outperforming OpenLineage / Spline:
-- **Neon Column Path Tracing**: Clicking any column pill (e.g. `final_revenue`) dims unrelated nodes and animates the exact upstream path back to leaf scans with moving flow particles.
-- **Inline Compiler Hazard Badges**: Nodes with execution bottlenecks (e.g. Cartesian joins, un-broadcasted dimension tables) pulse with warning/critical badges on the canvas. Clicking the badge opens the root-cause diagnosis and copy-pasteable fix code.
-- **Live Search & Auto-Focus**: Type column or table names into the top search bar to instantly highlight and pan/center to matching operations.
-- **Multi-Layout Switching**: Toggle between **↔ Horizontal (Pipeline Flow)** and **↕ Vertical (Catalyst Tree)** in one click.
-- **🔥 Risk Heatmap Mode**: Switch between operation type colors and risk severity heatmap (Red = Critical Hazard, Amber = Shuffle Exchange, Green = Safe).
-- **One-Click Vector SVG & Mermaid Export**: Download raw vector SVG or copy Mermaid code directly from the canvas toolbar.
+#### Visualizer Features:
+- **Column Lineage Tracing**: Click any column to highlight its exact upstream lineage path while dimming unrelated operations.
+- **Compiler Hazard Indicators**: Nodes with detected bottlenecks (e.g., Cartesian joins, un-broadcasted dimension tables) are flagged with actionable diagnostics and remediation code.
+- **Search & Auto-Focus**: Quickly locate nodes, tables, or columns using the search bar.
+- **Layout Options**: Switch between Horizontal (Pipeline Flow) and Vertical (Catalyst Tree) views.
+- **Risk View**: Toggle between semantic operation types and execution risk categories.
+- **Export Options**: One-click SVG download and Mermaid diagram generation.
 
 ---
 
