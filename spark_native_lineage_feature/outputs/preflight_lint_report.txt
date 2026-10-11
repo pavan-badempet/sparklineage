@@ -1,0 +1,6 @@
+Pre-Flight Linter Analysis: 1 issue(s) detected
+============================================================
+[1] CRITICAL: Cartesian / Cross Join Detected
+    Node 'Join' performs a Cartesian cross-join (Join Cross).
+    Recommendation: Add an explicit join predicate or verify if an intentional cross-join is necessary. Unintended cross joins cause an O(N*M) stage explosion.
+

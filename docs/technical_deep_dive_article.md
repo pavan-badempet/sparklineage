@@ -1,7 +1,7 @@
 # Why Spark Developers Waste Thousands on Compute (And Why We Built a Pre-Flight Catalyst Linter)
 
 *Authored by Pavan Badempet*  
-*Project Repository: [github.com/pavanbadempet/sparklineage](https://github.com/pavanbadempet/sparklineage)*  
+*Project Repository: [gitlab.com/pavan9b/sparklineage](https://gitlab.com/pavan9b/sparklineage)*  
 *PyPI Package: [pypi.org/project/sparklineage/](https://pypi.org/project/sparklineage/)*
 
 ---
@@ -180,4 +180,4 @@ inspector.display()
 ```
 
 We welcome feedback, issues, and contributions from the data engineering community on GitHub:  
-👉 **[https://github.com/pavanbadempet/sparklineage](https://github.com/pavanbadempet/sparklineage)**
+👉 **[https://gitlab.com/pavan9b/sparklineage](https://gitlab.com/pavan9b/sparklineage)**
