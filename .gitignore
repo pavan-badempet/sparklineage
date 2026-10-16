@@ -31,3 +31,7 @@ venv.bak/
 .coverage
 htmlcov/
 *.html
+
+# Rust build artifacts
+target/
+crates/sparklineage_core/target/
