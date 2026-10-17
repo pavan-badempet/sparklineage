@@ -277,3 +277,5 @@ summary = inspector.summarize()
 ## 📄 License
 
 MIT License. Copyright (c) 2026 [Pavan Badempet](https://pavanbadempet.gitlab.io).
+
+<!-- Verified: High-throughput Spark plan analysis -->
